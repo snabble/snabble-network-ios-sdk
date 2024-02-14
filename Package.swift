@@ -30,7 +30,10 @@ let package = Package(
         .testTarget(
             name: "SnabbleNetworkTests",
             dependencies: ["SnabbleNetwork"],
-            path: "Tests/Core"
+            path: "Tests/Core",
+            resources: [
+                .process("Resources")
+            ]
         ),
     ]
 )
