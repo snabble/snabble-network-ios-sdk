@@ -4,20 +4,33 @@
 import PackageDescription
 
 let package = Package(
-    name: "snabble-network-ios-sdk",
+    name: "SnabbleNetwork",
+    platforms: [
+        .iOS(.v15)
+    ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "snabble-network-ios-sdk",
-            targets: ["snabble-network-ios-sdk"]),
+            name: "SnabbleNetwork",
+            targets: ["SnabbleNetwork"]),
+    ],
+    dependencies: [
+        .package(
+            url: "https://github.com/lachlanbell/SwiftOTP",
+            from: "3.0.2"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "snabble-network-ios-sdk"),
+            name: "SnabbleNetwork",
+            dependencies: ["SwiftOTP"],
+            path: "Sources/Core"
+        ),
         .testTarget(
-            name: "snabble-network-ios-sdkTests",
-            dependencies: ["snabble-network-ios-sdk"]),
+            name: "SnabbleNetworkTests",
+            dependencies: ["SnabbleNetwork"],
+            path: "Tests/Core"
+        ),
     ]
 )

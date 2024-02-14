@@ -1,7 +1,14 @@
-import XCTest
-@testable import snabble_network_ios_sdk
+//
+//  SnabbleNetworkTests.swift
+//
+//
+//  Created by Andreas Osberghaus on 2024-02-14.
+//
 
-final class snabble_network_ios_sdkTests: XCTestCase {
+import XCTest
+@testable import SnabbleNetwork
+
+final class SnabbleNetworkTests: XCTestCase {
     func testExample() throws {
         // XCTest Documentation
         // https://developer.apple.com/documentation/xctest
@@ -10,3 +17,4 @@ final class snabble_network_ios_sdkTests: XCTestCase {
         // https://developer.apple.com/documentation/xctest/defining_test_cases_and_test_methods
     }
 }
+
