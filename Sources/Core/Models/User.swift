@@ -24,6 +24,12 @@ public struct User: Decodable {
         public let firstName: String?
         public let lastName: String?
         public let email: String?
+        
+        public init(firstName: String?, lastName: String?, email: String?) {
+            self.firstName = firstName
+            self.lastName = lastName
+            self.email = email
+        }
     }
     
     public struct Field: Decodable {
