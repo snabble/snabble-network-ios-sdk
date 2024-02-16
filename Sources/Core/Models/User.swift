@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct User: Decodable {
+public struct User: Decodable, Identifiable {
     public let id: String
     public let phoneNumber: String
     public let details: Details
@@ -20,7 +20,7 @@ public struct User: Decodable {
         case fields = "detailFields"
     }
     
-    public struct Details: Codable {
+    public struct Details: Codable, Equatable {
         public let firstName: String?
         public let lastName: String?
         public let email: String?
@@ -32,7 +32,7 @@ public struct User: Decodable {
         }
     }
     
-    public struct Field: Decodable {
+    public struct Field: Decodable, Identifiable, Equatable {
         public let id: String
         public let isRequired: Bool
         
@@ -40,5 +40,11 @@ public struct User: Decodable {
             case id
             case isRequired = "required"
         }
+    }
+}
+
+extension User: Equatable {
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.id == rhs.id
     }
 }
