@@ -12,7 +12,7 @@ public protocol NetworkManagerDelegate: AnyObject {
     func networkManager(_ networkManager: NetworkManager, appUserForConfiguration configuration: Configuration) -> AppUser?
     func networkManager(_ networkManager: NetworkManager, appUserUpdated appUser: AppUser)
 
-    func networkManager(_ networkManager: NetworkManager, projectIdForConfiguration configuration: Configuration) -> String
+    func networkManager(_ networkManager: NetworkManager, projectIdForConfiguration configuration: Configuration) -> String?
 }
 
 public class NetworkManager {
