@@ -9,24 +9,24 @@ import Foundation
 import Dispatch
 import Combine
 
-public protocol AuthenticatorDelegate: AnyObject {
+protocol AuthenticatorDelegate: AnyObject {
     func authenticator(_ authenticator: Authenticator, appUserForConfiguration configuration: Configuration) -> AppUser?
     func authenticator(_ authenticator: Authenticator, appUserUpdated appUser: AppUser)
 
-    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String
+    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String?
 }
 
-public class Authenticator {
+class Authenticator {
     public let urlSession: URLSession
 
-    public weak var delegate: AuthenticatorDelegate?
+    weak var delegate: AuthenticatorDelegate?
 
     enum Error: Swift.Error {
         case missingAuthenticator
         case missingProject
     }
 
-    public private(set) var token: Token?
+    private(set) var token: Token?
 
     private let queue: DispatchQueue = .init(label: "io.snabble.network.authenticator.\(UUID().uuidString)")
 
@@ -54,9 +54,11 @@ public class Authenticator {
         }
 
         // scenario 2: we have to register the app instance
-        let endpoint = Endpoints.AppUser.post(
-            configuration: configuration
+        var endpoint = Endpoints.AppUser.post(
+            appId: configuration.appId,
+            appSecret: configuration.appSecret
         )
+        endpoint.domain = configuration.domain
         let publisher = urlSession.dataTaskPublisher(for: endpoint)
             .handleEvents(receiveOutput: { [weak self] response in
                 self?.token = response.token
@@ -98,11 +100,14 @@ public class Authenticator {
 
             let publisher = self.validateAppUser(withConfiguration: configuration)
                 .map { appUser -> Endpoint<Token> in
-                    return Endpoints.Token.get(
-                        configuration: configuration,
+                    var endpoint = Endpoints.Token.get(
+                        appId: configuration.appId,
+                        appSecret: configuration.appSecret,
                         appUser: appUser,
                         projectId: projectId
                     )
+                    endpoint.domain = configuration.domain
+                    return endpoint
                 }
                 .tryMap { tokenEndpoint -> (URLSession, Endpoint<Token>) in
                     return (self.urlSession, tokenEndpoint)

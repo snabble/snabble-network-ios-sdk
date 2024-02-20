@@ -11,7 +11,8 @@ import SwiftOTP
 extension Endpoints {
     enum Token {
         static func get(
-            configuration: Configuration,
+            appId: String,
+            appSecret: String,
             appUser: SnabbleNetwork.AppUser,
             projectId: String,
             role: SnabbleNetwork.Token.Scope = .retailerApp
@@ -22,19 +23,18 @@ extension Endpoints {
                                                                     .init(name: "project", value: projectId),
                                                                     .init(name: "role", value: role.rawValue)
                                                                  ]),
-                                                                 configuration: configuration,
                                                                  parse: { data in
                 try Endpoints.jsonDecoder.decode(SnabbleNetwork.Token.self, from: data)
             })
-            if let authorization = authorization(withConfiguration: configuration, appUser: appUser) {
+            if let authorization = authorization(appId: appId, appSecret: appSecret, appUser: appUser) {
                 endpoint.headerFields = ["Authorization": "Basic \(authorization)"]
             }
             return endpoint
         }
 
-        private static func authorization(withConfiguration configuration: Configuration, appUser: SnabbleNetwork.AppUser) -> String? {
-            guard let password = password(withSecret: configuration.appSecret, forDate: Date()) else { return nil }
-            return "\(configuration.appId):\(password):\(appUser.id):\(appUser.secret)".data(using: .utf8)?.base64EncodedString()
+        private static func authorization(appId: String, appSecret: String, appUser: SnabbleNetwork.AppUser) -> String? {
+            guard let password = password(withSecret: appSecret, forDate: Date()) else { return nil }
+            return "\(appId):\(password):\(appUser.id):\(appUser.secret)".data(using: .utf8)?.base64EncodedString()
         }
 
         private static func password(withSecret secret: String, forDate date: Date) -> String? {

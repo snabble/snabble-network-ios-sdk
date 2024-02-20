@@ -11,13 +11,11 @@ public struct Configuration {
     public let appId: String
     public let appSecret: String
     public let domain: Domain
-    public let projectId: String
 
-    public init(appId: String, appSecret: String, domain: Domain, projectId: String) {
+    public init(appId: String, appSecret: String, domain: Domain) {
         self.appId = appId
         self.appSecret = appSecret
         self.domain = domain
-        self.projectId = projectId
     }
 }
 

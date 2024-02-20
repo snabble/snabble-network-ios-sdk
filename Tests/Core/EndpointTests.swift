@@ -14,9 +14,9 @@ struct Mock: Decodable {
 
 final class EndpointTests: XCTestCase {
 
-    let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
+    let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production)
     func testDefaultInit() throws {
-        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil), configuration: configuration) { _ in
+        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil)) { _ in
             return Mock(name: "foobar")
         }
         XCTAssertEqual(endpoint.method, .get(nil))
@@ -27,59 +27,43 @@ final class EndpointTests: XCTestCase {
     }
 
     func testEnvironmentParameter() throws {
-        var configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil), configuration: configuration) { _ in
+        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil)) { _ in
             Mock(name: "foobar")
         }
         XCTAssertEqual(endpoint.domain, .production)
-
-        configuration = .init(appId: "1", appSecret: "2", domain: .staging, projectId: "1")
-        endpoint = .init(path: "/apps/mock", method: .get(nil), configuration: configuration) { _ in
-            Mock(name: "foobar")
-        }
-        XCTAssertEqual(endpoint.domain, .staging)
-
-        configuration = .init(appId: "1", appSecret: "2", domain: .testing, projectId: "1")
-        endpoint = .init(path: "/apps/mock", method: .get(nil), configuration: configuration) { _ in
-            Mock(name: "foobar")
-        }
-        XCTAssertEqual(endpoint.domain, .testing)
     }
 
     func testPathParameter() throws {
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil), configuration: configuration) { _ in
+        var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil)) { _ in
             Mock(name: "foobar")
         }
         XCTAssertEqual(endpoint.path, "/apps/mock")
 
-        endpoint = .init(path: "/foobar/mock2", method: .get(nil), configuration: configuration) { _ in
+        endpoint = .init(path: "/foobar/mock2", method: .get(nil)) { _ in
             Mock(name: "foobar")
         }
         XCTAssertEqual(endpoint.path, "/foobar/mock2")
     }
 
     func testMethodParameter() throws {
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil), configuration: configuration) { _ in
+        var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil)) { _ in
             Mock(name: "foobar")
         }
         XCTAssertEqual(endpoint.method, .get(nil))
 
-        endpoint = .init(path: "/apps/mock", method: .get([.init(name: "foobar", value: "1")]), configuration: configuration) { _ in
+        endpoint = .init(path: "/apps/mock", method: .get([.init(name: "foobar", value: "1")])) { _ in
             Mock(name: "foobar")
         }
         XCTAssertEqual(endpoint.method, .get([.init(name: "foobar", value: "1")]))
 
-        endpoint = .init(path: "/apps/mock", method: .head, configuration: configuration) { _ in
+        endpoint = .init(path: "/apps/mock", method: .head) { _ in
             Mock(name: "foobar")
         }
         XCTAssertEqual(endpoint.method, .head)
     }
 
     func testToken() throws {
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil), configuration: configuration) { _ in
+        var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get(nil)) { _ in
             Mock(name: "foobar")
         }
         XCTAssertNil(endpoint.token)
@@ -91,11 +75,10 @@ final class EndpointTests: XCTestCase {
     }
 
     func testGETURLRequestWithQueryItems() throws {
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
         let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get([
             .init(name: "foobar", value: "1"),
             .init(name: "barfoo", value: "100")
-        ]), configuration: configuration) { _ in
+        ])) { _ in
             Mock(name: "foobar")
         }
         let urlRequest = try! endpoint.urlRequest()
@@ -106,11 +89,10 @@ final class EndpointTests: XCTestCase {
     }
 
     func testGETURLRequestWithQueryItemsOverwriteHeaderfields() throws {
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
         var endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .get([
             .init(name: "foobar", value: "1"),
             .init(name: "barfoo", value: "100")
-        ]), configuration: configuration) { _ in
+        ])) { _ in
             Mock(name: "foobar")
         }
         endpoint.headerFields = ["Content-Type": "application/text"]
@@ -135,11 +117,10 @@ final class EndpointTests: XCTestCase {
         ]
         """
         let jsonData = Data(jsonString.utf8)
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
         let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .post(jsonData, [
             .init(name: "foobar", value: "1"),
             .init(name: "barfoo", value: "100")
-        ]), configuration: configuration) { _ in
+        ])) { _ in
             Mock(name: "foobar")
         }
         let urlRequest = try! endpoint.urlRequest()
@@ -163,8 +144,7 @@ final class EndpointTests: XCTestCase {
         ]
         """
         let jsonData = Data(jsonString.utf8)
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .put(jsonData), configuration: configuration) { _ in
+        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .put(jsonData)) { _ in
             Mock(name: "foobar")
         }
         let urlRequest = try! endpoint.urlRequest()
@@ -188,8 +168,7 @@ final class EndpointTests: XCTestCase {
         ]
         """
         let jsonData = Data(jsonString.utf8)
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .patch(jsonData), configuration: configuration) { _ in
+        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .patch(jsonData)) { _ in
             Mock(name: "foobar")
         }
         let urlRequest = try! endpoint.urlRequest()
@@ -213,8 +192,7 @@ final class EndpointTests: XCTestCase {
         ]
         """
         let jsonData = Data(jsonString.utf8)
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .delete(jsonData), configuration: configuration) { _ in
+        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .delete(jsonData)) { _ in
             Mock(name: "foobar")
         }
         let urlRequest = try! endpoint.urlRequest()
@@ -225,8 +203,7 @@ final class EndpointTests: XCTestCase {
     }
 
     func testHEADURLRequest() throws {
-        let configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
-        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .head, configuration: configuration) { _ in
+        let endpoint: Endpoint<Mock> = .init(path: "/apps/mock", method: .head) { _ in
             Mock(name: "foobar")
         }
         let urlRequest = try! endpoint.urlRequest()

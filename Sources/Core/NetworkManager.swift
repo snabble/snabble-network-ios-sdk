@@ -8,11 +8,22 @@
 import Combine
 import Foundation
 
-public class NetworkManager {
-    public let authenticator: Authenticator
+public protocol NetworkManagerDelegate: AnyObject {
+    func networkManager(_ networkManager: NetworkManager, appUserForConfiguration configuration: Configuration) -> AppUser?
+    func networkManager(_ networkManager: NetworkManager, appUserUpdated appUser: AppUser)
 
-    public init(urlSession: URLSession = .shared) {
+    func networkManager(_ networkManager: NetworkManager, projectIdForConfiguration configuration: Configuration) -> String?
+}
+
+public class NetworkManager {
+    public let configuration: Configuration
+    private let authenticator: Authenticator
+    public weak var delegate: NetworkManagerDelegate?
+
+    public init(configuration: Configuration, urlSession: URLSession = .shared) {
+        self.configuration = configuration
         self.authenticator = Authenticator(urlSession: urlSession)
+        self.authenticator.delegate = self
     }
 
     public var urlSession: URLSession {
@@ -20,9 +31,10 @@ public class NetworkManager {
     }
 
     public func publisher<Response>(for endpoint: Endpoint<Response>) -> AnyPublisher<Response, Swift.Error> {
-        return authenticator.validToken(withConfiguration: endpoint.configuration)
-            .map { token -> Endpoint<Response> in
+        return authenticator.validToken(withConfiguration: configuration)
+            .map { [self] token -> Endpoint<Response> in
                 var endpoint = endpoint
+                endpoint.domain = configuration.domain
                 endpoint.token = token
                 return endpoint
             }
@@ -44,5 +56,38 @@ public class NetworkManager {
                 }
             })
             .eraseToAnyPublisher()
+    }
+    
+    public func publisher<Response>(for endpoint: Endpoint<Response>) async throws -> Response {
+        try await withCheckedThrowingContinuation { continuation in
+            var cancellable: AnyCancellable?
+            
+            cancellable = publisher(for: endpoint)
+                .sink { result in
+                    switch result {
+                    case .finished:
+                        break
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                    cancellable?.cancel()
+                } receiveValue: { value in
+                    continuation.resume(with: .success(value))
+                }
+        }
+    }
+}
+
+extension NetworkManager: AuthenticatorDelegate {
+    func authenticator(_ authenticator: Authenticator, appUserUpdated appUser: AppUser) {
+        delegate?.networkManager(self, appUserUpdated: appUser)
+    }
+    
+    func authenticator(_ authenticator: Authenticator, appUserForConfiguration configuration: Configuration) -> AppUser? {
+        delegate?.networkManager(self, appUserForConfiguration: configuration)
+    }
+    
+    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String? {
+        delegate?.networkManager(self, projectIdForConfiguration: configuration)
     }
 }

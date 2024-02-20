@@ -9,31 +9,29 @@ import Foundation
 
 extension Endpoints {
     public enum Phone {
-        public static func auth(configuration: Configuration, phoneNumber: String) -> Endpoint<Void> {
+        public static func auth(appId: String, phoneNumber: String) -> Endpoint<Void> {
             // swiftlint:disable:next force_try
             let data = try! JSONSerialization.data(withJSONObject: [
                 "phoneNumber": phoneNumber
             ])
             return .init(
-                path: "/\(configuration.appId)/verification/sms",
+                path: "/\(appId)/verification/sms",
                 method: .post(data, nil),
-                configuration: configuration,
                 parse: { _ in
                     return ()
                 }
             )
         }
 
-        public static func login(configuration: Configuration, phoneNumber: String, OTP: String) -> Endpoint<SnabbleNetwork.AppUser?> {
+        public static func login(appId: String, phoneNumber: String, OTP: String) -> Endpoint<SnabbleNetwork.AppUser?> {
             // swiftlint:disable:next force_try
             let data = try! JSONSerialization.data(withJSONObject: [
                 "otp": OTP,
                 "phoneNumber": phoneNumber
             ])
             return .init(
-                path: "/\(configuration.appId)/verification/sms/otp",
+                path: "/\(appId)/verification/sms/otp",
                 method: .post(data, nil),
-                configuration: configuration,
                 parse: { data in
                     do {
                         return try Endpoints.jsonDecoder.decode(SnabbleNetwork.AppUser.self, from: data)
@@ -51,15 +49,14 @@ extension Endpoints {
                 })
         }
 
-        public static func delete(configuration: Configuration, phoneNumber: String) -> Endpoint<Void> {
+        public static func delete(appId: String, phoneNumber: String) -> Endpoint<Void> {
             // swiftlint:disable:next force_try
             let data = try! JSONSerialization.data(withJSONObject: [
                 "phoneNumber": phoneNumber
             ])
             return .init(
-                path: "/\(configuration.appId)/verification/sms/delete",
+                path: "/\(appId)/verification/sms/delete",
                 method: .post(data, nil),
-                configuration: configuration,
                 parse: { _ in
                     return ()
                 }

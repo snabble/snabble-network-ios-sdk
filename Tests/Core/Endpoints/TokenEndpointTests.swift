@@ -18,12 +18,11 @@ final class TokenEndpointTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    var configuration: Configuration = .init(appId: "1", appSecret: "ABCDEFGHIJKLMNOP", domain: .production, projectId: "1")
+    var configuration: Configuration = .init(appId: "1", appSecret: "ABCDEFGHIJKLMNOP", domain: .production)
     var appUser: AppUser = .init(id: "555", secret: "123-456-789")
 
     func testGet() throws {
-        let endpoint = Endpoints.Token.get(configuration: configuration, appUser: appUser, projectId: "2")
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.Token.get(appId: configuration.appId, appSecret: configuration.appSecret, appUser: appUser, projectId: "2")
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "GET")
         XCTAssertEqual(endpoint.path, "/tokens")

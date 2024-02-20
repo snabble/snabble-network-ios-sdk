@@ -10,28 +10,27 @@ import SwiftOTP
 
 extension Endpoints {
     enum AppUser {
-        static func post(configuration: Configuration, projectId: String? = nil) -> Endpoint<UsersResponse> {
+        static func post(appId: String, appSecret: String, projectId: String? = nil) -> Endpoint<UsersResponse> {
             var queryItems: [URLQueryItem]?
             if let projectId = projectId {
                 queryItems = [.init(name: "project", value: projectId)]
             }
             var endpoint: Endpoint<UsersResponse> = .init(
-                path: "/apps/\(configuration.appId)/users",
+                path: "/apps/\(appId)/users",
                 method: .post(nil, queryItems),
-                configuration: configuration,
                 parse: { data in
                     try Endpoints.jsonDecoder.decode(UsersResponse.self, from: data)
                 }
             )
-            if let authorization = authorization(withConfiguration: configuration) {
+            if let authorization = authorization(appId: appId, appSecret: appSecret) {
                 endpoint.headerFields = ["Authorization": "Basic \(authorization)"]
             }
             return endpoint
         }
 
-        private static func authorization(withConfiguration configuration: Configuration) -> String? {
-            guard let password = password(withSecret: configuration.appSecret, forDate: Date()) else { return nil }
-            return "\(configuration.appId):\(password)".data(using: .utf8)?.base64EncodedString()
+        private static func authorization(appId: String, appSecret: String) -> String? {
+            guard let password = password(withSecret: appSecret, forDate: Date()) else { return nil }
+            return "\(appId):\(password)".data(using: .utf8)?.base64EncodedString()
         }
 
         private static func password(withSecret secret: String, forDate date: Date) -> String? {
