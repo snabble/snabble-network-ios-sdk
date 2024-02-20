@@ -57,6 +57,25 @@ public class NetworkManager {
             })
             .eraseToAnyPublisher()
     }
+    
+    public func publisher<Response>(for endpoint: Endpoint<Response>) async throws -> Response {
+        try await withCheckedThrowingContinuation { continuation in
+            var cancellable: AnyCancellable?
+            
+            cancellable = publisher(for: endpoint)
+                .sink { result in
+                    switch result {
+                    case .finished:
+                        break
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                    cancellable?.cancel()
+                } receiveValue: { value in
+                    continuation.resume(with: .success(value))
+                }
+        }
+    }
 }
 
 extension NetworkManager: AuthenticatorDelegate {
