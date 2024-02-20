@@ -11,7 +11,7 @@ public struct ClientError: Decodable {
     public let error: ErrorType
     
     public struct ErrorType: Decodable {
-        let type: String
-        let message: String
+        public let type: String
+        public let message: String
     }
 }

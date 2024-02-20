@@ -17,7 +17,7 @@ private extension URLResponse {
             var clientError: ClientError?
             
             if httpResponse.httpStatusCode.responseType == .clientError {
-                clientError = try Endpoints.jsonDecoder.decode(ClientError.self, from: data)
+                clientError = try? Endpoints.jsonDecoder.decode(ClientError.self, from: data)
             }
             throw HTTPError.invalid(httpResponse, clientError)
         }
