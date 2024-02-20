@@ -17,13 +17,9 @@ private extension URLResponse {
             var clientError: ClientError?
             
             if httpResponse.httpStatusCode.responseType == .clientError {
-                struct ErrorData: Decodable {
-                    let error: ClientError
-                }
-                let error = try? Endpoints.jsonDecoder.decode(ErrorData.self, from: data)
-
-                clientError = error?.error
+                clientError = try? Endpoints.jsonDecoder.decode(ClientError.self, from: data)
             }
+            
             throw HTTPError.invalid(httpResponse, clientError)
         }
     }
