@@ -42,7 +42,7 @@ public class NetworkManager {
                 urlSession.dataTaskPublisher(for: endpoint)
             }
             .retryOnce(if: { error in
-                if case let HTTPError.invalid(response) = error {
+                if case let HTTPError.invalid(response, _) = error {
                     let statusCode = response.httpStatusCode
                     return statusCode == .unauthorized || statusCode == .forbidden
                 }
