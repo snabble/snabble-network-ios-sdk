@@ -131,7 +131,7 @@ extension NetworkManagerTests: NetworkManagerDelegate {
         appUser
     }
 
-    func networkManager(_ networkManager: NetworkManager, projectIdForConfiguration configuration: Configuration) -> String {
+    func networkManager(_ networkManager: NetworkManager, projectIdForConfiguration configuration: Configuration) -> String? {
         "123"
     }
 }
