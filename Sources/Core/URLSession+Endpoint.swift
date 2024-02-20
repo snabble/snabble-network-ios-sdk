@@ -14,7 +14,12 @@ private extension URLResponse {
             throw HTTPError.unknown(self)
         }
         guard httpResponse.httpStatusCode.responseType == .success else {
-            throw HTTPError.invalid(httpResponse)
+            var clientError: ClientError?
+            
+            if httpResponse.httpStatusCode.responseType == .clientError {
+                clientError = try Endpoints.jsonDecoder.decode(ClientError.self, from: data)
+            }
+            throw HTTPError.invalid(httpResponse, clientError)
         }
     }
 }

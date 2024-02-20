@@ -8,7 +8,7 @@
 import Foundation
 
 public enum HTTPError: Error {
-    case invalid(HTTPURLResponse)
+    case invalid(HTTPURLResponse, ClientError?)
     case unknown(URLResponse)
     case unexpected(Error)
 }
