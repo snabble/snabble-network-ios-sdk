@@ -8,7 +8,7 @@
 import Foundation
 
 extension Endpoints {
-    enum User {
+    public enum User {
         public static func me(configuration: Configuration) -> Endpoint<SnabbleNetwork.User> {
             return .init(
                 path: "/apps/users/me",
