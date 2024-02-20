@@ -27,23 +27,19 @@ public enum Endpoints {
 public struct Endpoint<Response> {
     public let method: HTTPMethod
     public let path: String
-    public let configuration: Configuration
 
     public let parse: (Data) throws -> Response
 
     var token: Token?
     var headerFields: [String: String] = [:]
 
-    public init(path: String, method: HTTPMethod, configuration: Configuration, parse: @escaping (Data) throws -> Response) {
+    public init(path: String, method: HTTPMethod, parse: @escaping (Data) throws -> Response) {
         self.path = path
         self.method = method
-        self.configuration = configuration
         self.parse = parse
     }
 
-    var domain: Domain {
-        configuration.domain
-    }
+    var domain: Domain = .production
 
     enum Error: Swift.Error {
         case invalidRequestError(String)

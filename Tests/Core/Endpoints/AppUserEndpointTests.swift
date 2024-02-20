@@ -13,8 +13,7 @@ final class AppUserEndpointTests: XCTestCase {
     var configuration: Configuration = .init(appId: "1", appSecret: "ABCDEFGHIJKLMNOP", domain: .production)
 
     func testPostWithoutProject() throws {
-        let endpoint = Endpoints.AppUser.post(configuration: configuration)
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.AppUser.post(appId: configuration.appId, appSecret: configuration.appSecret)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/apps/1/users")
@@ -27,8 +26,7 @@ final class AppUserEndpointTests: XCTestCase {
     }
 
     func testPostWithProject() throws {
-        let endpoint = Endpoints.AppUser.post(configuration: configuration, projectId: "2")
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.AppUser.post(appId: configuration.appId, appSecret: configuration.appSecret, projectId: "2")
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/apps/1/users")

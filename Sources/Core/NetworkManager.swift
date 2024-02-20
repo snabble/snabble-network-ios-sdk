@@ -16,10 +16,12 @@ public protocol NetworkManagerDelegate: AnyObject {
 }
 
 public class NetworkManager {
+    public let configuration: Configuration
     private let authenticator: Authenticator
     public weak var delegate: NetworkManagerDelegate?
 
-    public init(urlSession: URLSession = .shared) {
+    public init(configuration: Configuration, urlSession: URLSession = .shared) {
+        self.configuration = configuration
         self.authenticator = Authenticator(urlSession: urlSession)
         self.authenticator.delegate = self
     }
@@ -29,9 +31,10 @@ public class NetworkManager {
     }
 
     public func publisher<Response>(for endpoint: Endpoint<Response>) -> AnyPublisher<Response, Swift.Error> {
-        return authenticator.validToken(withConfiguration: endpoint.configuration)
-            .map { token -> Endpoint<Response> in
+        return authenticator.validToken(withConfiguration: configuration)
+            .map { [self] token -> Endpoint<Response> in
                 var endpoint = endpoint
+                endpoint.domain = configuration.domain
                 endpoint.token = token
                 return endpoint
             }

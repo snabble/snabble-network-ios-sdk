@@ -18,11 +18,10 @@ final class UserEndpointTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    var configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production)
+//    var configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production)
 
     func testMe() throws {
-        let endpoint = Endpoints.User.me(configuration: configuration)
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.User.me()
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "GET")
         XCTAssertEqual(endpoint.path, "/apps/users/me")
@@ -34,8 +33,7 @@ final class UserEndpointTests: XCTestCase {
 
     func testUpdate() throws {
         let details = User.Details(firstName: "Foo", lastName: "Bar", email: "foo@bar.com")
-        let endpoint = Endpoints.User.update(configuration: configuration, details: details)
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.User.update(details: details)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "PUT")
         XCTAssertEqual(endpoint.path, "/apps/users/me/details")
@@ -53,8 +51,7 @@ final class UserEndpointTests: XCTestCase {
     }
 
     func testDelete() throws {
-        let endpoint = Endpoints.User.erase(configuration: configuration)
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.User.erase()
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/apps/users/me/erase")

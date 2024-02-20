@@ -19,7 +19,7 @@ final class NetworkManagerTests: XCTestCase {
 
     override func setUpWithError() throws {
         cancellables = Set<AnyCancellable>()
-        networkManager = NetworkManager(urlSession: .mockSession)
+        networkManager = NetworkManager(configuration: configuration, urlSession: .mockSession)
         networkManager.delegate = self
 
         MockURLProtocol.error = nil
@@ -78,7 +78,7 @@ final class NetworkManagerTests: XCTestCase {
             return (response, Data())
         }
 
-        let endpoint = Endpoints.AppUser.post(configuration: configuration)
+        let endpoint = Endpoints.AppUser.post(appId: configuration.appId, appSecret: configuration.appSecret)
 
         let expectation = expectation(description: "register")
         networkManager.publisher(for: endpoint)
@@ -98,7 +98,7 @@ final class NetworkManagerTests: XCTestCase {
     }
 
     func testEndpoint() throws {
-        let endpoint = Endpoints.Phone.auth(configuration: configuration, phoneNumber: "+4915119695415")
+        let endpoint = Endpoints.Phone.auth(appId: configuration.appId, phoneNumber: "+4915119695415")
 
         let expectation = expectation(description: "auth")
         networkManager.publisher(for: endpoint)

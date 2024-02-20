@@ -54,9 +54,11 @@ class Authenticator {
         }
 
         // scenario 2: we have to register the app instance
-        let endpoint = Endpoints.AppUser.post(
-            configuration: configuration
+        var endpoint = Endpoints.AppUser.post(
+            appId: configuration.appId,
+            appSecret: configuration.appSecret
         )
+        endpoint.domain = configuration.domain
         let publisher = urlSession.dataTaskPublisher(for: endpoint)
             .handleEvents(receiveOutput: { [weak self] response in
                 self?.token = response.token
@@ -98,11 +100,14 @@ class Authenticator {
 
             let publisher = self.validateAppUser(withConfiguration: configuration)
                 .map { appUser -> Endpoint<Token> in
-                    return Endpoints.Token.get(
-                        configuration: configuration,
+                    var endpoint = Endpoints.Token.get(
+                        appId: configuration.appId,
+                        appSecret: configuration.appSecret,
                         appUser: appUser,
                         projectId: projectId
                     )
+                    endpoint.domain = configuration.domain
+                    return endpoint
                 }
                 .tryMap { tokenEndpoint -> (URLSession, Endpoint<Token>) in
                     return (self.urlSession, tokenEndpoint)

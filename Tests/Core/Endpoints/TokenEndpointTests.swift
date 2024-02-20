@@ -22,8 +22,7 @@ final class TokenEndpointTests: XCTestCase {
     var appUser: AppUser = .init(id: "555", secret: "123-456-789")
 
     func testGet() throws {
-        let endpoint = Endpoints.Token.get(configuration: configuration, appUser: appUser, projectId: "2")
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.Token.get(appId: configuration.appId, appSecret: configuration.appSecret, appUser: appUser, projectId: "2")
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "GET")
         XCTAssertEqual(endpoint.path, "/tokens")

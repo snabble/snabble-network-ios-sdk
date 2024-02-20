@@ -25,8 +25,7 @@ final class PhoneEndpointTests: XCTestCase {
     var appUser: AppUser = .init(id: "555", secret: "123-456-789")
 
     func testAuth() throws {
-        let endpoint = Endpoints.Phone.auth(configuration: configuration, phoneNumber: phoneNumber)
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.Phone.auth(appId: configuration.appId, phoneNumber: phoneNumber)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/1/verification/sms")
@@ -42,8 +41,7 @@ final class PhoneEndpointTests: XCTestCase {
     }
 
     func testLogin() throws {
-        let endpoint = Endpoints.Phone.login(configuration: configuration, phoneNumber: phoneNumber, OTP: otp)
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.Phone.login(appId: configuration.appId, phoneNumber: phoneNumber, OTP: otp)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/1/verification/sms/otp")
@@ -60,8 +58,7 @@ final class PhoneEndpointTests: XCTestCase {
     }
 
     func testDelete() throws {
-        let endpoint = Endpoints.Phone.delete(configuration: configuration, phoneNumber: phoneNumber)
-        XCTAssertEqual(endpoint.configuration, configuration)
+        let endpoint = Endpoints.Phone.delete(appId: configuration.appId, phoneNumber: phoneNumber)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/1/verification/sms/delete")
