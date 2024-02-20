@@ -18,7 +18,7 @@ final class UserEndpointTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    var configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production, projectId: "1")
+    var configuration: Configuration = .init(appId: "1", appSecret: "2", domain: .production)
 
     func testMe() throws {
         let endpoint = Endpoints.User.me(configuration: configuration)

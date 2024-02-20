@@ -10,7 +10,7 @@ import XCTest
 
 final class AppUserEndpointTests: XCTestCase {
 
-    var configuration: Configuration = .init(appId: "1", appSecret: "ABCDEFGHIJKLMNOP", domain: .production, projectId: "1")
+    var configuration: Configuration = .init(appId: "1", appSecret: "ABCDEFGHIJKLMNOP", domain: .production)
 
     func testPostWithoutProject() throws {
         let endpoint = Endpoints.AppUser.post(configuration: configuration)

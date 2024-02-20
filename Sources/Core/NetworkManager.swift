@@ -8,11 +8,20 @@
 import Combine
 import Foundation
 
+public protocol NetworkManagerDelegate: AnyObject {
+    func networkManager(_ networkManager: NetworkManager, appUserForConfiguration configuration: Configuration) -> AppUser?
+    func networkManager(_ networkManager: NetworkManager, appUserUpdated appUser: AppUser)
+
+    func networkManager(_ networkManager: NetworkManager, projectIdForConfiguration configuration: Configuration) -> String
+}
+
 public class NetworkManager {
-    public let authenticator: Authenticator
+    private let authenticator: Authenticator
+    public weak var delegate: NetworkManagerDelegate?
 
     public init(urlSession: URLSession = .shared) {
         self.authenticator = Authenticator(urlSession: urlSession)
+        self.authenticator.delegate = self
     }
 
     public var urlSession: URLSession {
@@ -44,5 +53,19 @@ public class NetworkManager {
                 }
             })
             .eraseToAnyPublisher()
+    }
+}
+
+extension NetworkManager: AuthenticatorDelegate {
+    func authenticator(_ authenticator: Authenticator, appUserUpdated appUser: AppUser) {
+        delegate?.networkManager(self, appUserUpdated: appUser)
+    }
+    
+    func authenticator(_ authenticator: Authenticator, appUserForConfiguration configuration: Configuration) -> AppUser? {
+        delegate?.networkManager(self, appUserForConfiguration: configuration)
+    }
+    
+    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String? {
+        delegate?.networkManager(self, projectIdForConfiguration: configuration)
     }
 }

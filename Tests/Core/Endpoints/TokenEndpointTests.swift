@@ -18,7 +18,7 @@ final class TokenEndpointTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    var configuration: Configuration = .init(appId: "1", appSecret: "ABCDEFGHIJKLMNOP", domain: .production, projectId: "1")
+    var configuration: Configuration = .init(appId: "1", appSecret: "ABCDEFGHIJKLMNOP", domain: .production)
     var appUser: AppUser = .init(id: "555", secret: "123-456-789")
 
     func testGet() throws {

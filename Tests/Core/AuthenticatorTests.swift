@@ -13,7 +13,7 @@ final class AuthenticatorTests: XCTestCase {
 
     var authenticator: Authenticator!
     var cancellables = Set<AnyCancellable>()
-    var configuration = Configuration(appId: "123", appSecret: "123-456-789", domain: .testing, projectId: "123")
+    var configuration = Configuration(appId: "123", appSecret: "123-456-789", domain: .testing)
     var urlSession: URLSession = .mockSession
 
     override func setUpWithError() throws {
@@ -90,7 +90,7 @@ extension AuthenticatorTests: AuthenticatorDelegate {
         appUser
     }
 
-    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String {
+    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String? {
         projectId
     }
 }

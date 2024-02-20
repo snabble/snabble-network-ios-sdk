@@ -14,12 +14,13 @@ final class NetworkManagerTests: XCTestCase {
 
     var cancellables: Set<AnyCancellable>!
     var networkManager: NetworkManager!
-    var configuration: Configuration = .init(appId: "123", appSecret: "2", domain: .production, projectId: "123")
+    var configuration: Configuration = .init(appId: "123", appSecret: "2", domain: .production)
+    var appUser: AppUser?
 
     override func setUpWithError() throws {
         cancellables = Set<AnyCancellable>()
         networkManager = NetworkManager(urlSession: .mockSession)
-        networkManager.authenticator.delegate = self
+        networkManager.delegate = self
 
         MockURLProtocol.error = nil
         MockURLProtocol.requestHandler = { request in
@@ -32,7 +33,7 @@ final class NetworkManagerTests: XCTestCase {
                     headerFields: ["Content-Type": "application/json"]
                 )!
                 return (response, try loadResource(inBundle: .module, filename: "UsersResponse-Without-Token", withExtension: "json"))
-            case "https://api.snabble.io/tokens?project=1&role=retailerApp":
+            case "https://api.snabble.io/tokens?project=123&role=retailerApp":
                 let response = HTTPURLResponse(
                     url: request.url!,
                     statusCode: 200,
@@ -109,27 +110,28 @@ final class NetworkManagerTests: XCTestCase {
                     break
                 }
                 expectation.fulfill()
-            } receiveValue: { _ in
+            } receiveValue: { value in
+                print("foobar")
+                print(value)
             }
             .store(in: &cancellables)
 
         wait(for: [expectation], timeout: 10.0)
     }
 
-    var appUser: AppUser?
-    var projectId: String = "1"
+    
 }
 
-extension NetworkManagerTests: AuthenticatorDelegate {
-    func authenticator(_ authenticator: Authenticator, appUserUpdated appUser: AppUser) {
+extension NetworkManagerTests: NetworkManagerDelegate {
+    func networkManager(_ networkManager: NetworkManager, appUserUpdated appUser: AppUser) {
         self.appUser = appUser
     }
 
-    func authenticator(_ authenticator: Authenticator, appUserForConfiguration configuration: Configuration) -> AppUser? {
+    func networkManager(_ networkManager: NetworkManager, appUserForConfiguration configuration: Configuration) -> AppUser? {
         appUser
     }
 
-    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String {
-        projectId
+    func networkManager(_ networkManager: NetworkManager, projectIdForConfiguration configuration: Configuration) -> String {
+        "123"
     }
 }

@@ -9,24 +9,24 @@ import Foundation
 import Dispatch
 import Combine
 
-public protocol AuthenticatorDelegate: AnyObject {
+protocol AuthenticatorDelegate: AnyObject {
     func authenticator(_ authenticator: Authenticator, appUserForConfiguration configuration: Configuration) -> AppUser?
     func authenticator(_ authenticator: Authenticator, appUserUpdated appUser: AppUser)
 
-    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String
+    func authenticator(_ authenticator: Authenticator, projectIdForConfiguration configuration: Configuration) -> String?
 }
 
-public class Authenticator {
+class Authenticator {
     public let urlSession: URLSession
 
-    public weak var delegate: AuthenticatorDelegate?
+    weak var delegate: AuthenticatorDelegate?
 
     enum Error: Swift.Error {
         case missingAuthenticator
         case missingProject
     }
 
-    public private(set) var token: Token?
+    private(set) var token: Token?
 
     private let queue: DispatchQueue = .init(label: "io.snabble.network.authenticator.\(UUID().uuidString)")
 
