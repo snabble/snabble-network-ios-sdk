@@ -9,7 +9,7 @@ import Foundation
 
 public struct User: Decodable, Identifiable {
     public let id: String
-    public let phoneNumber: String
+    public let phoneNumber: String?
     public let details: Details
     public let fields: [Field]
     
