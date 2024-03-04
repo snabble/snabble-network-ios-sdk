@@ -32,7 +32,7 @@ extension Endpoints {
         public static func erase() -> Endpoint<Void> {
             return .init(
                 path: "/apps/users/me/erase",
-                method: .post(nil, nil),
+                method: .post(nil),
                 parse: { _ in
                     return ()
                 }

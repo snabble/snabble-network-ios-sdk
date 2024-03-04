@@ -15,8 +15,8 @@ extension Endpoints {
                 "phoneNumber": phoneNumber
             ])
             return .init(
-                path: "/\(appId)/verification/sms",
-                method: .post(data, nil),
+                path: "/\(appId)/me/verification/phone-number",
+                method: .post(data),
                 parse: { _ in
                     return ()
                 }
@@ -30,8 +30,8 @@ extension Endpoints {
                 "phoneNumber": phoneNumber
             ])
             return .init(
-                path: "/\(appId)/verification/sms/otp",
-                method: .post(data, nil),
+                path: "/\(appId)/me/verification/phone-number/otp",
+                method: .post(data),
                 parse: { data in
                     do {
                         return try Endpoints.jsonDecoder.decode(SnabbleNetwork.AppUser.self, from: data)
@@ -50,13 +50,9 @@ extension Endpoints {
         }
 
         public static func delete(appId: String, phoneNumber: String) -> Endpoint<Void> {
-            // swiftlint:disable:next force_try
-            let data = try! JSONSerialization.data(withJSONObject: [
-                "phoneNumber": phoneNumber
-            ])
             return .init(
-                path: "/\(appId)/verification/sms/delete",
-                method: .post(data, nil),
+                path: "/\(appId)/me/phone-number",
+                method: .delete,
                 parse: { _ in
                     return ()
                 }

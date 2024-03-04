@@ -57,8 +57,6 @@ extension Endpoint {
         switch method {
         case .get(let queryItems):
             components?.queryItems = queryItems?.sorted(by: \.name)
-        case .post(_, let queryItems):
-            components?.queryItems = queryItems?.sorted(by: \.name)
         default:
             break
         }
@@ -70,7 +68,7 @@ extension Endpoint {
         var request = URLRequest(url: url)
 
         switch method {
-        case .post(let data, _), .put(let data), .patch(let data), .delete(let data):
+        case .post(let data), .put(let data), .patch(let data):
             request.httpBody = data
         default:
             request.httpBody = nil

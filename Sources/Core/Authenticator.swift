@@ -61,7 +61,6 @@ class Authenticator {
         endpoint.domain = configuration.domain
         let publisher = urlSession.dataTaskPublisher(for: endpoint)
             .handleEvents(receiveOutput: { [weak self] response in
-                self?.token = response.token
                 self?.delegate?.authenticator(self!, appUserUpdated: response.appUser)
             })
             .map {
