@@ -20,6 +20,14 @@ public struct User: Decodable, Identifiable {
         case fields = "detailFields"
     }
     
+    public init(from decoder: Decoder) throws {
+        let container: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.phoneNumber = try container.decodeIfPresent(String.self, forKey: .phoneNumber)
+        self.details = try container.decodeIfPresent(Details.self, forKey: .details)
+        self.fields = try container.decodeIfPresent([Field].self, forKey: .fields)
+    }
+
     public struct Details: Codable, Equatable {
         public let firstName: String?
         public let lastName: String?
