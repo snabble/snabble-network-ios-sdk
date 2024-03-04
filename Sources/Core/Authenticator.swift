@@ -92,7 +92,7 @@ class Authenticator {
             }
 
             // scenario 3: we need a new token
-            guard let projectId = self.delegate?.authenticator(self, projectIdForConfiguration: configuration) else {
+            guard let projectId = self.delegate?.authenticator(self, projectIdForConfiguration: configuration) ?? configuration.projectId else {
                 return Fail(error: Error.missingProject)
                     .eraseToAnyPublisher()
             }
