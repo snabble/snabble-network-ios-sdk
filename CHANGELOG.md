@@ -6,25 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## unreleased
 
-### Added
-* Added international calling codes #APPS-1334
+### Fixed
+* Removes QueryParameter for `POST` and `DELETE` Requests
+* Update PhoneAuth URLs #APPS-1354
 
-### Changed
-* Updated to new URL paths #APPS-1354
-
-### Updated 
-* snabble/snabble-network-ios-sdk 1.0.0
-* apple/swift-crypto.git 3.2.0
-
-## [1.1.0]
-
-### Added
-* Accessible HTTP Errors
-* Default `CountryCallingCode` information
-* Wrapper class to access the API `PhoneAuth`
-
-### Updated 
-* lachlanbell/SwiftOTP 3.0.2 (was 3.0.1)
-
-## [1.0.0] - 2024-01-30
+## [1.0.0] - 2024-02-14
 * Initital release
