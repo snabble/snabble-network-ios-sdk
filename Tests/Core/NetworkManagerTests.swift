@@ -41,7 +41,7 @@ final class NetworkManagerTests: XCTestCase {
                     headerFields: ["Content-Type": "application/json"]
                 )!
                 return (response, try loadResource(inBundle: .module, filename: "Token", withExtension: "json"))
-            case "https://api.snabble.io/123/me/verification/phone-number":
+            case "https://api.snabble.io/apps/users/me/verification/phone-number":
                 let response = HTTPURLResponse(
                     url: request.url!,
                     statusCode: 200,
@@ -98,7 +98,7 @@ final class NetworkManagerTests: XCTestCase {
     }
 
     func testEndpoint() throws {
-        let endpoint = Endpoints.Phone.auth(appId: configuration.appId, phoneNumber: "+4915119695415")
+        let endpoint = Endpoints.Phone.auth(phoneNumber: "+4915119695415")
 
         let expectation = expectation(description: "auth")
         networkManager.publisher(for: endpoint)

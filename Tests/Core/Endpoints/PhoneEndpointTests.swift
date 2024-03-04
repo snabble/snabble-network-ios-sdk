@@ -25,13 +25,13 @@ final class PhoneEndpointTests: XCTestCase {
     var appUser: AppUser = .init(id: "555", secret: "123-456-789")
 
     func testAuth() throws {
-        let endpoint = Endpoints.Phone.auth(appId: configuration.appId, phoneNumber: phoneNumber)
+        let endpoint = Endpoints.Phone.auth(phoneNumber: phoneNumber)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
-        XCTAssertEqual(endpoint.path, "/1/me/verification/phone-number")
+        XCTAssertEqual(endpoint.path, "/apps/users/me/verification/phone-number")
         XCTAssertNil(endpoint.token)
         let urlRequest = try endpoint.urlRequest()
-        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/1/me/verification/phone-number")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/apps/users/me/verification/phone-number")
         XCTAssertEqual(urlRequest.httpMethod, "POST")
 
         let data = try! JSONSerialization.data(withJSONObject: [
@@ -41,13 +41,13 @@ final class PhoneEndpointTests: XCTestCase {
     }
 
     func testLogin() throws {
-        let endpoint = Endpoints.Phone.login(appId: configuration.appId, phoneNumber: phoneNumber, OTP: otp)
+        let endpoint = Endpoints.Phone.login(phoneNumber: phoneNumber, OTP: otp)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
-        XCTAssertEqual(endpoint.path, "/1/me/verification/phone-number/otp")
+        XCTAssertEqual(endpoint.path, "/apps/users/me/verification/phone-number/otp")
         XCTAssertNil(endpoint.token)
         let urlRequest = try endpoint.urlRequest()
-        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/1/me/verification/phone-number/otp")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/apps/users/me/verification/phone-number/otp")
         XCTAssertEqual(urlRequest.httpMethod, "POST")
 
         let data = try! JSONSerialization.data(withJSONObject: [
@@ -58,13 +58,13 @@ final class PhoneEndpointTests: XCTestCase {
     }
 
     func testDelete() throws {
-        let endpoint = Endpoints.Phone.delete(appId: configuration.appId, phoneNumber: phoneNumber)
+        let endpoint = Endpoints.Phone.delete()
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "DELETE")
-        XCTAssertEqual(endpoint.path, "/1/me/phone-number")
+        XCTAssertEqual(endpoint.path, "/apps/users/me/phone-number")
         XCTAssertNil(endpoint.token)
         let urlRequest = try endpoint.urlRequest()
-        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/1/me/phone-number")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/apps/users/me/phone-number")
         XCTAssertEqual(urlRequest.httpMethod, "DELETE")
     }
 
