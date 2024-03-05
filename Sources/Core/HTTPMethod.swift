@@ -10,9 +10,9 @@ import Foundation
 public enum HTTPMethod: Equatable {
     case get([URLQueryItem]?)
     case patch(Data?)
-    case post(Data?, [URLQueryItem]?)
+    case post(Data?)
     case put(Data?)
-    case delete(Data?)
+    case delete
     case head
 
     var value: String {

@@ -26,14 +26,14 @@ final class AppUserEndpointTests: XCTestCase {
     }
 
     func testPostWithProject() throws {
-        let endpoint = Endpoints.AppUser.post(appId: configuration.appId, appSecret: configuration.appSecret, projectId: "2")
+        let endpoint = Endpoints.AppUser.post(appId: configuration.appId, appSecret: configuration.appSecret)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/apps/1/users")
         XCTAssertNotNil(endpoint.headerFields["Authorization"])
         XCTAssertNil(endpoint.token)
         let urlRequest = try endpoint.urlRequest()
-        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/apps/1/users?project=2")
+        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/apps/1/users")
         XCTAssertEqual(urlRequest.httpMethod, "POST")
         XCTAssertNil(urlRequest.httpBody)
     }

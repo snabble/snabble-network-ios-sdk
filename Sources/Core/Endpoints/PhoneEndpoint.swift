@@ -9,29 +9,29 @@ import Foundation
 
 extension Endpoints {
     public enum Phone {
-        public static func auth(appId: String, phoneNumber: String) -> Endpoint<Void> {
+        public static func auth(phoneNumber: String) -> Endpoint<Void> {
             // swiftlint:disable:next force_try
             let data = try! JSONSerialization.data(withJSONObject: [
                 "phoneNumber": phoneNumber
             ])
             return .init(
-                path: "/\(appId)/verification/sms",
-                method: .post(data, nil),
+                path: "/apps/users/me/verification/phone-number",
+                method: .post(data),
                 parse: { _ in
                     return ()
                 }
             )
         }
 
-        public static func login(appId: String, phoneNumber: String, OTP: String) -> Endpoint<SnabbleNetwork.AppUser?> {
+        public static func login(phoneNumber: String, OTP: String) -> Endpoint<SnabbleNetwork.AppUser?> {
             // swiftlint:disable:next force_try
             let data = try! JSONSerialization.data(withJSONObject: [
                 "otp": OTP,
                 "phoneNumber": phoneNumber
             ])
             return .init(
-                path: "/\(appId)/verification/sms/otp",
-                method: .post(data, nil),
+                path: "/apps/users/me/verification/phone-number/otp",
+                method: .post(data),
                 parse: { data in
                     do {
                         return try Endpoints.jsonDecoder.decode(SnabbleNetwork.AppUser.self, from: data)
@@ -49,14 +49,10 @@ extension Endpoints {
                 })
         }
 
-        public static func delete(appId: String, phoneNumber: String) -> Endpoint<Void> {
-            // swiftlint:disable:next force_try
-            let data = try! JSONSerialization.data(withJSONObject: [
-                "phoneNumber": phoneNumber
-            ])
+        public static func delete() -> Endpoint<Void> {
             return .init(
-                path: "/\(appId)/verification/sms/delete",
-                method: .post(data, nil),
+                path: "/apps/users/me/phone-number",
+                method: .delete,
                 parse: { _ in
                     return ()
                 }

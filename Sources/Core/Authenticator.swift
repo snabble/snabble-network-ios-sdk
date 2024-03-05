@@ -61,7 +61,6 @@ class Authenticator {
         endpoint.domain = configuration.domain
         let publisher = urlSession.dataTaskPublisher(for: endpoint)
             .handleEvents(receiveOutput: { [weak self] response in
-                self?.token = response.token
                 self?.delegate?.authenticator(self!, appUserUpdated: response.appUser)
             })
             .map {
@@ -93,7 +92,7 @@ class Authenticator {
             }
 
             // scenario 3: we need a new token
-            guard let projectId = self.delegate?.authenticator(self, projectIdForConfiguration: configuration) else {
+            guard let projectId = self.delegate?.authenticator(self, projectIdForConfiguration: configuration) ?? configuration.projectId else {
                 return Fail(error: Error.missingProject)
                     .eraseToAnyPublisher()
             }
