@@ -10,14 +10,10 @@ import SwiftOTP
 
 extension Endpoints {
     enum AppUser {
-        static func post(appId: String, appSecret: String, projectId: String? = nil) -> Endpoint<UsersResponse> {
-            var queryItems: [URLQueryItem]?
-            if let projectId = projectId {
-                queryItems = [.init(name: "project", value: projectId)]
-            }
+        static func post(appId: String, appSecret: String) -> Endpoint<UsersResponse> {
             var endpoint: Endpoint<UsersResponse> = .init(
                 path: "/apps/\(appId)/users",
-                method: .post(nil, queryItems),
+                method: .post(nil),
                 parse: { data in
                     try Endpoints.jsonDecoder.decode(UsersResponse.self, from: data)
                 }
@@ -47,5 +43,4 @@ extension Endpoints {
 
 struct UsersResponse: Codable {
     let appUser: AppUser
-    let token: Token?
 }

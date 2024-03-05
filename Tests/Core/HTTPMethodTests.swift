@@ -25,12 +25,12 @@ final class HTTPMethodTests: XCTestCase {
     }
 
     func testPOSTValue() throws {
-        let method: HTTPMethod = .post(nil, nil)
+        let method: HTTPMethod = .post(nil)
         XCTAssertEqual(method.value, "POST")
     }
 
     func testDELETEValue() throws {
-        let method: HTTPMethod = .delete(nil)
+        let method: HTTPMethod = .delete
         XCTAssertEqual(method.value, "DELETE")
     }
 
