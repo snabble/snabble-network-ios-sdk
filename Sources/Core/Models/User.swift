@@ -53,7 +53,7 @@ public struct User: Decodable, Identifiable {
         }
     }
     
-    public struct Consent: Decodable, Equatable {
+    public struct Consent: Codable, Equatable {
         public let major: Int
         public let minor: Int
         
