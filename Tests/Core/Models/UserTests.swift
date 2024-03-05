@@ -36,14 +36,14 @@ final class UserTests: XCTestCase {
         let url = Bundle.module.url(forResource: "Consent", withExtension: "json")!
         let data = try Data(contentsOf: url)
         let consent = try Endpoints.jsonDecoder.decode(User.Consent.self, from: data)
-        XCTAssertEqual(consent, User.Consent(major: 2, minor: 1))
+        XCTAssertEqual(consent, User.Consent(version: User.Consent.Version(major: 2, minor: 1)))
         
         let myUrl = Bundle.module.url(forResource: "Me", withExtension: "json")!
         let myData = try Data(contentsOf: myUrl)
         let myUser = try Endpoints.jsonDecoder.decode(User.self, from: myData)
-        if let myConsent = myUser.consent {
-            XCTAssertTrue(myConsent < consent)
-            XCTAssertFalse(myConsent == consent)
+        if let myVersion = myUser.consent?.version, let otherVersion = consent.version {
+            XCTAssertTrue(myVersion < otherVersion)
+            XCTAssertFalse(myVersion == otherVersion)
         }
     }
 }

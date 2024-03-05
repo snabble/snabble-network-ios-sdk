@@ -54,14 +54,30 @@ public struct User: Decodable, Identifiable {
     }
     
     public struct Consent: Codable, Equatable {
-        public let major: Int
-        public let minor: Int
+        public let version: Version?
         
-        public static func < (lhs: Self, rhs: Self) -> Bool {
-            lhs.major < rhs.major
+        public struct Version: Codable, Equatable {
+            public let major: Int
+            public let minor: Int
+            
+            public init(major: Int, minor: Int) {
+                self.major = major
+                self.minor = minor
+            }
+            
+            public static func < (lhs: Self, rhs: Self) -> Bool {
+                lhs.major < rhs.major || (lhs.major == rhs.major && lhs.minor < rhs.minor)
+            }
+            public static func == (lhs: Self, rhs: Self) -> Bool {
+                lhs.major == rhs.major && lhs.minor == rhs.minor
+            }
+        }
+        
+        public init(version: Consent.Version) {
+            self.version = version
         }
         public static func == (lhs: Self, rhs: Self) -> Bool {
-            lhs.major == rhs.major && lhs.minor == rhs.minor
+            lhs.version == rhs.version
         }
     }
 }

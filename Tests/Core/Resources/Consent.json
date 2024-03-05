@@ -1,4 +1,6 @@
 {
-    "major": 2,
-    "minor": 1
+    "version": {
+        "major": 2,
+        "minor": 1
+    }
 }

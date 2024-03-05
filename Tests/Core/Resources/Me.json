@@ -12,7 +12,9 @@
     { "id": "email", "required": true }
   ],
   "currentConsent": {
-      "major": 1,
-      "minor": 0
+      "version": {
+          "major": 1,
+          "minor": 0
+      }
   },
 }
