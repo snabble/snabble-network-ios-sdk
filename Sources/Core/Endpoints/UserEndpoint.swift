@@ -29,10 +29,9 @@ extension Endpoints {
             )
         }
         public static func update(consent: SnabbleNetwork.User.Consent, appUserId: String) -> Endpoint<Void> {
-            let query = String("?appUserID=\(appUserId)").addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
             
             return .init(
-                path: "/apps/users/me/consents\(query ?? "")",
+                path: "/apps/users/\(appUserId)/consents",
                 method: .post(try? Endpoints.jsonEncoder.encode(consent)),
                 parse: { _ in
                     return ()
