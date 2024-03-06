@@ -51,7 +51,7 @@ final class UserEndpointTests: XCTestCase {
     }
 
     func testConsent() throws {
-        let consent = User.Consent(version: User.Consent.Version(major: 1, minor: 0))
+        let consent = User.Consent(version: "1.0")
         let endpoint = Endpoints.User.update(consent: consent)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "PUT")
@@ -62,10 +62,7 @@ final class UserEndpointTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpMethod, "PUT")
 
         let data = try! JSONSerialization.data(withJSONObject: [
-            "version": [
-                "major": 1,
-                "minor": 0
-            ]
+            "version": "1.0"
         ])
         XCTAssertEqual(urlRequest.httpBody?.count, data.count)
 
