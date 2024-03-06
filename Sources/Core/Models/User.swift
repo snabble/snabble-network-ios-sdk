@@ -56,9 +56,16 @@ public struct User: Decodable, Identifiable {
     public struct Consent: Codable, Equatable {
         public let version: String?
         
+        enum CodingKeys: String, CodingKey {
+            case version
+        }
         public init(version: String) {
             self.version = version
         }
+//        public init(from decoder: Decoder) throws {
+//            let container: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
+//            self.version = try container.decode(String.self, forKey: .version)
+//        }
         public static func == (lhs: Self, rhs: Self) -> Bool {
             lhs.version == rhs.version
         }

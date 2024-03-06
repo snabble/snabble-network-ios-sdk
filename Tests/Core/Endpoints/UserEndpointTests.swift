@@ -54,12 +54,12 @@ final class UserEndpointTests: XCTestCase {
         let consent = User.Consent(version: "1.0")
         let endpoint = Endpoints.User.update(consent: consent)
         XCTAssertEqual(endpoint.domain, .production)
-        XCTAssertEqual(endpoint.method.value, "PUT")
+        XCTAssertEqual(endpoint.method.value, "POST")
         XCTAssertEqual(endpoint.path, "/apps/users/me/consents")
         XCTAssertNil(endpoint.token)
         let urlRequest = try endpoint.urlRequest()
         XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/apps/users/me/consents")
-        XCTAssertEqual(urlRequest.httpMethod, "PUT")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
 
         let data = try! JSONSerialization.data(withJSONObject: [
             "version": "1.0"
