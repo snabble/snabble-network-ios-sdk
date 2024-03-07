@@ -72,7 +72,7 @@ public struct User: Decodable, Identifiable {
                 .components(separatedBy: ".")
                 .map { Int($0) ?? 0 }
             self.major = components.first ?? 0
-            self.minor = components.first ?? 0
+            self.minor = components.last ?? 0
         }
         
         public init(major: Int, minor: Int = 0) {
@@ -82,7 +82,7 @@ public struct User: Decodable, Identifiable {
         
         public init(from decoder: any Decoder) throws {
             let container: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
-            self.init(version: try container.decode(String.self, forKey: .version))
+            self.init(version: try container.decodeIfPresent(String.self, forKey: .version) ?? "0")
         }
         
         public func encode(to encoder: any Encoder) throws {
