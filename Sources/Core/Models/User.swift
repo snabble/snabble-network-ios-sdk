@@ -82,7 +82,7 @@ public struct User: Decodable, Identifiable {
         
         public init(from decoder: any Decoder) throws {
             let container: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
-            self.init(version: try container.decodeIfPresent(String.self, forKey: .version) ?? "0")
+            self.init(version: try container.decode(String.self, forKey: .version))
         }
         
         public func encode(to encoder: any Encoder) throws {
