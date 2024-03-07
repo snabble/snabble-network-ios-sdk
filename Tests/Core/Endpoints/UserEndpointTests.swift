@@ -51,7 +51,7 @@ final class UserEndpointTests: XCTestCase {
     }
 
     func testConsent() throws {
-        let consent = User.Consent(version: "1.0")
+        let consent = User.Consent(version: "1")
         let endpoint = Endpoints.User.update(consent: consent, appUserId: "12345")
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "POST")

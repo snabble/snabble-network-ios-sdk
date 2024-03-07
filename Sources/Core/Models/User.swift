@@ -54,14 +54,42 @@ public struct User: Decodable, Identifiable {
     }
     
     public struct Consent: Codable, Equatable {
-        public let version: String?
+        public let major: Int
+        public let minor: Int
+        
+        public var version: String {
+            "\(major).\(minor)"
+        }
         
         enum CodingKeys: String, CodingKey {
             case version
         }
+        
+        /// Consent initialiser with version string
+        /// - Parameter version: The format must be "x.x" or "x"
         public init(version: String) {
-            self.version = version
+            let components: [Int] = version
+                .components(separatedBy: ".")
+                .map { Int($0) ?? 0 }
+            self.major = components.first ?? 0
+            self.minor = components.first ?? 0
         }
+        
+        public init(major: Int, minor: Int = 0) {
+            self.major = major
+            self.minor = minor
+        }
+        
+        public init(from decoder: any Decoder) throws {
+            let container: KeyedDecodingContainer<CodingKeys> = try decoder.container(keyedBy: CodingKeys.self)
+            self.init(version: try container.decode(String.self, forKey: .version))
+        }
+        
+        public func encode(to encoder: any Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+            try container.encode(version, forKey: .version)
+        }
+        
         public static func == (lhs: Self, rhs: Self) -> Bool {
             lhs.version == rhs.version
         }

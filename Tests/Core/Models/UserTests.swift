@@ -41,9 +41,9 @@ final class UserTests: XCTestCase {
         let myUrl = Bundle.module.url(forResource: "Me", withExtension: "json")!
         let myData = try Data(contentsOf: myUrl)
         let myUser = try Endpoints.jsonDecoder.decode(User.self, from: myData)
-        if let myVersion = myUser.consent?.version, let otherVersion = consent.version {
-            XCTAssertTrue(myVersion < otherVersion)
-            XCTAssertFalse(myVersion == otherVersion)
+        if let myVersion = myUser.consent?.version {
+            XCTAssertTrue(myVersion < consent.version)
+            XCTAssertFalse(myVersion == consent.version)
         }
     }
 }
