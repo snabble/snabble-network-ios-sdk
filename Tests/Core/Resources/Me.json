@@ -10,5 +10,8 @@
     { "id": "firstName", "required": true },
     { "id": "lastName", "required": true },
     { "id": "email", "required": true }
-  ]
+  ],
+  "currentConsent": {
+      "version": "1.0"
+  }
 }

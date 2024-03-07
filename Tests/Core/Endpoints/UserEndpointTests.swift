@@ -50,6 +50,24 @@ final class UserEndpointTests: XCTestCase {
         XCTAssertEqual(urlRequest.httpBody?.count, data.count)
     }
 
+    func testConsent() throws {
+        let consent = User.Consent(version: "1")
+        let endpoint = Endpoints.User.update(consent: consent, appUserId: "12345")
+        XCTAssertEqual(endpoint.domain, .production)
+        XCTAssertEqual(endpoint.method.value, "POST")
+        XCTAssertEqual(endpoint.path, "/apps/users/12345/consents")
+        XCTAssertNil(endpoint.token)
+        let urlRequest = try endpoint.urlRequest()
+        XCTAssertEqual(urlRequest.url?.absoluteString, "https://api.snabble.io/apps/users/12345/consents")
+        XCTAssertEqual(urlRequest.httpMethod, "POST")
+
+        let data = try! JSONSerialization.data(withJSONObject: [
+            "version": "1.0"
+        ])
+        XCTAssertEqual(urlRequest.httpBody?.count, data.count)
+
+    }
+
     func testDelete() throws {
         let endpoint = Endpoints.User.erase()
         XCTAssertEqual(endpoint.domain, .production)

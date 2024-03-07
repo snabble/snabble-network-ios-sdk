@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## unreleased
 
+### Added
+* Add Conset Field to User #APPS-1349
+
 ### Fixed
 * Removes QueryParameter for `POST` and `DELETE` Requests
 * Update PhoneAuth URLs #APPS-1354

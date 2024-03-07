@@ -28,7 +28,17 @@ extension Endpoints {
                 }
             )
         }
-        
+        public static func update(consent: SnabbleNetwork.User.Consent, appUserId: String) -> Endpoint<Void> {
+            
+            return .init(
+                path: "/apps/users/\(appUserId)/consents",
+                method: .post(try? Endpoints.jsonEncoder.encode(consent)),
+                parse: { _ in
+                    return ()
+                }
+            )
+        }
+
         public static func erase() -> Endpoint<Void> {
             return .init(
                 path: "/apps/users/me/erase",
