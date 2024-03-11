@@ -29,7 +29,14 @@ final class UserTests: XCTestCase {
         let url = Bundle.module.url(forResource: "Details", withExtension: "json")!
         let data = try Data(contentsOf: url)
         let details = try Endpoints.jsonDecoder.decode(User.Details.self, from: data)
-        XCTAssertEqual(details, User.Details(firstName: "Bob", lastName: "Biscuit", email: "bobby@example.com"))
+        XCTAssertEqual(details, User.Details(firstName: "Bob", 
+                                             lastName: "Biscuit",
+                                             email: "bobby@example.com",
+                                             street: "123 Main Street",
+                                             zip: "98765",
+                                             city: "Basin City",
+                                             country: "Nowhereland",
+                                             state: nil))
     }
 
     func testConsentParsing() throws {
