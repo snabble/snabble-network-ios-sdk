@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 * Add Conset Field to User #APPS-1349
+* Add additional fields to User #APPS-1350
 
 ### Fixed
 * Removes QueryParameter for `POST` and `DELETE` Requests
