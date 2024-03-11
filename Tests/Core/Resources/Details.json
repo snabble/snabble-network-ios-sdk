@@ -1,5 +1,9 @@
 {
     "firstName": "Bob",
     "lastName": "Biscuit",
-    "email": "bobby@example.com"
+    "email": "bobby@example.com",
+    "street": "123 Main Street",
+    "zip": "98765",
+    "city": "Basin City",
+    "country": "Nowhereland"
 }

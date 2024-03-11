@@ -32,7 +32,14 @@ final class UserEndpointTests: XCTestCase {
     }
 
     func testUpdate() throws {
-        let details = User.Details(firstName: "Foo", lastName: "Bar", email: "foo@bar.com")
+        let details = User.Details(firstName: "Foo", 
+                                   lastName: "Bar",
+                                   email: "foo@bar.com",
+                                   street: "123 Main Street",
+                                   zip: "98765",
+                                   city: "Basin City",
+                                   country: "Nowhereland",
+                                   state: nil)
         let endpoint = Endpoints.User.update(details: details)
         XCTAssertEqual(endpoint.domain, .production)
         XCTAssertEqual(endpoint.method.value, "PUT")
@@ -45,7 +52,11 @@ final class UserEndpointTests: XCTestCase {
         let data = try! JSONSerialization.data(withJSONObject: [
             "firstName": "Foo",
             "lastName": "Bar",
-            "email": "foo@bar.com"
+            "email": "foo@bar.com",
+            "street": "123 Main Street",
+            "zip": "98765",
+            "city": "Basin City",
+            "country": "Nowhereland"
         ])
         XCTAssertEqual(urlRequest.httpBody?.count, data.count)
     }

@@ -35,11 +35,28 @@ public struct User: Decodable, Identifiable {
         public let firstName: String?
         public let lastName: String?
         public let email: String?
-        
-        public init(firstName: String?, lastName: String?, email: String?) {
+        public let street: String?
+        public let zip: String?
+        public let city: String?
+        public let country: String?
+        public let state: String?
+
+        public init(firstName: String?,
+                    lastName: String?,
+                    email: String?,
+                    street: String?,
+                    zip: String?,
+                    city: String?,
+                    country: String?,
+                    state: String?) {
             self.firstName = firstName
             self.lastName = lastName
             self.email = email
+            self.street = street
+            self.zip = zip
+            self.city = city
+            self.country = country
+            self.state = state
         }
     }
     
