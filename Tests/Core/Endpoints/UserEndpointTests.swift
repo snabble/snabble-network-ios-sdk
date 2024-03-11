@@ -36,8 +36,8 @@ final class UserEndpointTests: XCTestCase {
                                    lastName: "Bar",
                                    email: "foo@bar.com",
                                    street: "123 Main Street",
-                                   zip: "98765", city:
-                                    "Basin City",
+                                   zip: "98765",
+                                   city: "Basin City",
                                    country: "Nowhereland",
                                    state: nil)
         let endpoint = Endpoints.User.update(details: details)
