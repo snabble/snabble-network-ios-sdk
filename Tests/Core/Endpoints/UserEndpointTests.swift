@@ -35,6 +35,7 @@ final class UserEndpointTests: XCTestCase {
         let details = User.Details(firstName: "Foo", 
                                    lastName: "Bar",
                                    email: "foo@bar.com",
+                                   dateOfBirth: "1970-01-01",
                                    street: "123 Main Street",
                                    zip: "98765",
                                    city: "Basin City",
