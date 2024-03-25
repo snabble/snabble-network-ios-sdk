@@ -35,6 +35,7 @@ public struct User: Codable, Identifiable {
         public let firstName: String?
         public let lastName: String?
         public let email: String?
+        public let dateOfBirth: String?
         public let street: String?
         public let zip: String?
         public let city: String?
@@ -44,6 +45,7 @@ public struct User: Codable, Identifiable {
         public init(firstName: String?,
                     lastName: String?,
                     email: String?,
+                    dateOfBirth: String?,
                     street: String?,
                     zip: String?,
                     city: String?,
@@ -52,6 +54,7 @@ public struct User: Codable, Identifiable {
             self.firstName = firstName
             self.lastName = lastName
             self.email = email
+            self.dateOfBirth = dateOfBirth
             self.street = street
             self.zip = zip
             self.city = city
